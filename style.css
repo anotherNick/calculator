@@ -9,7 +9,7 @@ body{
 
 #calculator{
     box-sizing: border-box;
-    background-color: #00A385;
+    background-color: pink;
     padding: 32px;
     margin: 32px auto;
     border: 4px solid #001F17;
@@ -25,7 +25,7 @@ body{
     height: 64px; 
     margin-bottom: 16px;
     padding: 14px;
-    background-color: #D7D7A8;
+    background-color: white;
     border: 2px solid #001F17;
     border-radius: 6px;
     font-family: "Courier New", Courier, monospace;
@@ -40,8 +40,8 @@ body{
 button{
     font-size: 32px;
     margin: 6px;
-    background-color: #e8a554;
-    color: #00493A;
+    background-color: #FF66CC;
+    color: white;
     border-radius: 5px;
 }
 
