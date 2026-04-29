@@ -70,6 +70,7 @@ function updateNumber(value){
             break;
         
         case "=":
+        case "Enter":
             
             if(a !== null && op !== null && b !== null){
                 
@@ -189,4 +190,20 @@ operatorButtons.addEventListener('click', (e) => {
     }
 })
 
+document.addEventListener('keydown', (e) => {
+
+    const numberPad = ["0","1","2","3","4","5","6","7","8","9",".","=","Enter"];
+    const operators = ["AC","⌫","+","-","*","/"]
+
+    if(numberPad.includes(e.key)){
+
+        updateNumber(e.key);
+
+    }else if(operators.includes(e.key)){
+
+        updateOperator(e.key);
+
+    }
+
+});
 
