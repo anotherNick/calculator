@@ -113,6 +113,30 @@ function updateOperator(value){
         a = null; b = null; op = null;
         updateDisplay('');
         
+    }else if(value =="⌫"){
+
+        if(op !== null && b !== null){
+
+            if(b.toString().length < 2){ 
+                b = null;
+                updateDisplay('');
+            }else{
+                b = b.toString().slice(0, -1);
+                updateDisplay(b);
+            }
+
+        }else if(op === null && a !== null){
+
+            if(a.toString().length < 2){ 
+                a = null;
+                updateDisplay('');
+            }else{
+                a = a.toString().slice(0, -1);
+                updateDisplay(a);
+            }
+
+        }
+
     }else if(a !== null && b === null){
 
         op = value;
