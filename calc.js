@@ -18,7 +18,13 @@ function operate(a, b, op){
             return a * b;
             break;
         case "/":
-            return a / b;
+            if(a == 0 || b == 0){
+                alert('Really? Dividing by Zero?');
+                a = null; b = null; op = null;
+                updateDisplay('');
+            }else{
+                return a / b;
+            }
             break;
         default:
             alert('Invalid operator specified!')
