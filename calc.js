@@ -52,14 +52,16 @@ function updateNumber(value){
         case ".":
             
             const currentNumber = document.getElementById('display').innerText;
-
+            
             if(!currentNumber.includes('.') && op !== null){
 
+                if(b === null){ b = 0; }
                 b += '.';
                 updateDisplay(b);
 
             }else if(!currentNumber.includes('.')){
 
+                if(a === null){ a = 0; }
                 a += '.';
                 updateDisplay(a);
 
@@ -70,6 +72,7 @@ function updateNumber(value){
         case "=":
             
             if(a !== null && op !== null && b !== null){
+                
                 a = operate(a, b, op);
                 b = null;
                 op = null;
@@ -108,48 +111,64 @@ function updateNumber(value){
 
 function updateOperator(value){
 
-    if(value == "AC"){
+    switch(value){
+        case "AC":
         
-        a = null; b = null; op = null;
-        updateDisplay('');
+            a = null; b = null; op = null;
+            updateDisplay('');
+            break;
+
+        case "⌫":
+
+            if(op !== null && b !== null){
+
+                if(b.toString().length < 2){ 
+
+                    b = null;
+                    updateDisplay('');
+
+                }else{
+
+                    b = b.toString().slice(0, -1);
+                    updateDisplay(b);
+                }
+
+            }else if(op === null && a !== null){
+
+                if(a.toString().length < 2){ 
+
+                    a = null;
+                    updateDisplay('');
+
+                }else{
+
+                    a = a.toString().slice(0, -1);
+                    updateDisplay(a);
+
+                }
+            
+            }
+
+            break;
+
+        default: 
         
-    }else if(value =="⌫"){
+            if(a !== null && b === null){
 
-        if(op !== null && b !== null){
+                op = value;
+                updateDisplay("");
+        
+            }else if(a !== null && op !== null && b !== null){
 
-            if(b.toString().length < 2){ 
+                a = operate(a, b, op);
                 b = null;
-                updateDisplay('');
-            }else{
-                b = b.toString().slice(0, -1);
-                updateDisplay(b);
+                op = value;
+            
+                updateDisplay(a);        
+
             }
 
-        }else if(op === null && a !== null){
-
-            if(a.toString().length < 2){ 
-                a = null;
-                updateDisplay('');
-            }else{
-                a = a.toString().slice(0, -1);
-                updateDisplay(a);
-            }
-
-        }
-
-    }else if(a !== null && b === null){
-
-        op = value;
-        updateDisplay("");
-    
-    }else if(a !== null && op !== null && b !== null){
-
-        a = operate(a, b, op);
-        b = null;
-        op = value;
-        
-        updateDisplay(a);        
-
+            break;
     }
 
 }
