@@ -4,6 +4,9 @@ let op = null;
 
 function operate(a, b, op){
 
+    a = Number(a);
+    b = Number(b);
+
     switch(op){
         case "+":
             return a + b;
@@ -23,11 +26,17 @@ function operate(a, b, op){
 
 }
 
-function updateDisplay(str){
+function updateDisplay(num){
 
     const display = document.getElementById('display');
 
-    display.innerText = str;
+    if(num.toString().length > 15){
+
+        num = num.toString().slice(0, 15);
+
+    }
+
+    display.innerText = num;
 
 }
 
@@ -35,47 +44,81 @@ function updateNumber(value){
 
     switch(value){
         case ".":
-            addDecimal();
+            
+            const currentNumber = document.getElementById('display').innerText;
+
+            if(!currentNumber.includes('.') && op !== null){
+
+                b += '.';
+                updateDisplay(b);
+
+            }else if(!currentNumber.includes('.')){
+
+                a += '.';
+                updateDisplay(a);
+
+            }
+
             break;
-        case "=":
-            operate(a, b, op);
-            break;
-    }
-
-    if(op === null && a === null){
-
-        a = value;
-        updateDisplay(a);
-
-    }else if(op === null){
-
-        a += value;
-        updateDisplay(a)
-
-    }else if(op !== null && b === null){
         
-        b = value;
-        updateDisplay(a + op + b);
+        case "=":
+            
+            if(a !== null && op !== null && b !== null){
+                a = operate(a, b, op);
+                b = null;
+                op = null;
+                updateDisplay(a);
+            
+            }
 
-    }else if(op !== null){
+            break;
 
-        b += value;
-        updateDisplay(a + op + b);
+        default:
 
+            if(op === null && a === null){
+
+                a = value;
+                updateDisplay(a);
+
+            }else if(op === null){
+
+                a += value;
+                updateDisplay(a)
+
+            }else if(op !== null && b === null){
+                
+                b = value;
+                updateDisplay(b);
+
+            }else if(op !== null){
+
+                b += value;
+                updateDisplay(b);
+
+            }
     }
 
 }
 
 function updateOperator(value){
 
-    if(op === null || b === null){
+    if(value == "AC"){
+        
+        a = null; b = null; op = null;
+        updateDisplay('');
+        
+    }else if(a !== null && b === null){
 
         op = value;
-        updateDisplay(a + op);
+        updateDisplay("");
     
-    }else{
+    }else if(a !== null && op !== null && b !== null){
 
+        a = operate(a, b, op);
+        b = null;
+        op = value;
         
+        updateDisplay(a);        
 
     }
 
