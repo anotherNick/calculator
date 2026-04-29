@@ -120,6 +120,7 @@ function updateOperator(value){
             break;
 
         case "⌫":
+        case "Backspace":
 
             if(op !== null && b !== null){
 
@@ -193,7 +194,7 @@ operatorButtons.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
 
     const numberPad = ["0","1","2","3","4","5","6","7","8","9",".","=","Enter"];
-    const operators = ["AC","⌫","+","-","*","/"]
+    const operators = ["AC","⌫","+","-","*","/","Backspace"]
 
     if(numberPad.includes(e.key)){
 
