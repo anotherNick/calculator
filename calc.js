@@ -114,7 +114,7 @@ function updateEquation(value){
         case "-":
         case "*":
         case "/": 
-           console.log(vars, operator); 
+          
             if(!operator){
 
                 operator = value;
@@ -128,7 +128,7 @@ function updateEquation(value){
                 updateDisplay(vars.a, true);        
 
             }
-            console.log(vars, operator);
+          
 
             break;
         
