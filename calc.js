@@ -10,21 +10,21 @@ function operate(){
 
     switch(operator){
         case "+":
-            return a + b;
-            break;
+            return +(a + b).toFixed(3);
+  
         case "-":
-            return a - b;
-            break;
+            return +(a - b).toFixed(3);
+  
         case "*":
-            return a * b;
-            break;
+            return +(a * b).toFixed(3);
+  
         case "/":
             if(a == 0 || b == 0){
                 alert('Really? Dividing by Zero?');
                 a = null; b = null; operator = null;
                 updateDisplay('');
             }else{
-                return a / b;
+                return +(a / b).toFixed(3);
             }
             break;
         default:
