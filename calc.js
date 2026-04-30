@@ -168,6 +168,8 @@ function updateEquation(value){
 
             }else{
 
+                if(displayingResult){ a = null; }
+
                 a = (a !== null) ? a += value : value;
                 updateDisplay(a);
 
