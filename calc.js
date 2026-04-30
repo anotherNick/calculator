@@ -1,6 +1,7 @@
 let a = null;
 let b = null;
 let op = null;
+let displayingResult = false;
 
 function operate(a, b, op){
 
@@ -32,7 +33,7 @@ function operate(a, b, op){
 
 }
 
-function updateDisplay(num){
+function updateDisplay(num, isResult = false){
 
     const display = document.getElementById('display');
 
@@ -44,6 +45,42 @@ function updateDisplay(num){
 
     display.innerText = num;
 
+    displayingResult = isResult;
+
+}
+
+function backspace(num){
+
+    if(op !== null){
+
+        if(b === null || b.toString().length < 2){
+
+            b = null;
+            return '';
+
+        }else{
+
+            b = b.toString().slice(0, -1);
+            return b;
+
+        }
+
+    }else{
+
+        if(a === null || a.toString().length < 2){
+
+            a = null;
+            return '';
+
+        }else{
+
+            a = a.toString().slice(0, -1);
+            return a;
+
+        } 
+
+    }
+
 }
 
 function updateEquation(value){
@@ -51,40 +88,17 @@ function updateEquation(value){
     switch(value){
         case "AC":
         
-            a = null; b = null; op = null;
+            a = null; b = null; op = null; 
             updateDisplay('');
             break;
 
         case "⌫":
         case "Backspace":
 
-            if(op !== null && b !== null){
+            if(!displayingResult){
 
-                if(b.toString().length < 2){ 
+                updateDisplay(backspace());
 
-                    b = null;
-                    updateDisplay('');
-
-                }else{
-
-                    b = b.toString().slice(0, -1);
-                    updateDisplay(b);
-                }
-
-            }else if(op === null && a !== null){
-
-                if(a.toString().length < 2){ 
-
-                    a = null;
-                    updateDisplay('');
-
-                }else{
-
-                    a = a.toString().slice(0, -1);
-                    updateDisplay(a);
-
-                }
-            
             }
 
             break;
@@ -93,7 +107,7 @@ function updateEquation(value){
         case "-":
         case "*":
         case "/": 
-        
+            
             if(a !== null && b === null){
 
                 op = value;
@@ -104,7 +118,7 @@ function updateEquation(value){
                 b = null;
                 op = value;
             
-                updateDisplay(a);        
+                updateDisplay(a, true);        
 
             }
 
@@ -138,7 +152,8 @@ function updateEquation(value){
                 a = operate(a, b, op);
                 b = null;
                 op = null;
-                updateDisplay(a);
+
+                updateDisplay(a, true);
             
             }
 
