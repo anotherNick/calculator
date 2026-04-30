@@ -158,7 +158,6 @@ function updateOperator(value){
             if(a !== null && b === null){
 
                 op = value;
-                updateDisplay("");
         
             }else if(a !== null && op !== null && b !== null){
 
