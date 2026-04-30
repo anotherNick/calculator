@@ -46,71 +46,7 @@ function updateDisplay(num){
 
 }
 
-function updateNumber(value){
-
-    switch(value){
-        case ".":
-            
-            const currentNumber = document.getElementById('display').innerText;
-            
-            if(!currentNumber.includes('.') && op !== null){
-
-                if(b === null){ b = 0; }
-                b += '.';
-                updateDisplay(b);
-
-            }else if(!currentNumber.includes('.')){
-
-                if(a === null){ a = 0; }
-                a += '.';
-                updateDisplay(a);
-
-            }
-
-            break;
-        
-        case "=":
-        case "Enter":
-            
-            if(a !== null && op !== null && b !== null){
-                
-                a = operate(a, b, op);
-                b = null;
-                op = null;
-                updateDisplay(a);
-            
-            }
-
-            break;
-
-        default:
-
-            if(op === null && a === null){
-
-                a = value;
-                updateDisplay(a);
-
-            }else if(op === null){
-
-                a += value;
-                updateDisplay(a)
-
-            }else if(op !== null && b === null){
-                
-                b = value;
-                updateDisplay(b);
-
-            }else if(op !== null){
-
-                b += value;
-                updateDisplay(b);
-
-            }
-    }
-
-}
-
-function updateOperator(value){
+function updateEquation(value){
 
     switch(value){
         case "AC":
@@ -153,7 +89,10 @@ function updateOperator(value){
 
             break;
 
-        default: 
+        case "+":
+        case "-":
+        case "*":
+        case "/": 
         
             if(a !== null && b === null){
 
@@ -170,38 +109,74 @@ function updateOperator(value){
             }
 
             break;
+        
+        case ".":
+            
+            const currentNumber = document.getElementById('display').innerText;
+            
+            if(!currentNumber.includes('.') && op !== null){
+
+                if(b === null){ b = 0; }
+                b += '.';
+                updateDisplay(b);
+
+            }else if(!currentNumber.includes('.')){
+
+                if(a === null){ a = 0; }
+                a += '.';
+                updateDisplay(a);
+
+            }
+
+            break;
+        
+        case "=":
+        case "Enter":
+            
+            if(a !== null && op !== null && b !== null){
+                
+                a = operate(a, b, op);
+                b = null;
+                op = null;
+                updateDisplay(a);
+            
+            }
+
+            break;
+        // Cases 0-9:
+        default:
+
+            if(op !== null){
+
+                b = (b !== null) ? b += value : value;
+                updateDisplay(b);
+
+            }else{
+
+                a = (a !== null) ? a += value : value;
+                updateDisplay(a);
+
+            }
     }
 
 }
 
-const numberButtons = document.getElementById("number-buttons");
+const calculator = document.getElementById("calculator");
 
-numberButtons.addEventListener('click', (e) => {
+calculator.addEventListener('click', (e) => {
     if(e.target.tagName === 'BUTTON'){
-        updateNumber(e.target.innerText);
+        updateEquation(e.target.innerText);
     }
 });
 
-const operatorButtons = document.getElementById("operator-buttons");
-
-operatorButtons.addEventListener('click', (e) => {
-    if(e.target.tagName === 'BUTTON'){
-        updateOperator(e.target.innerText);
-    }
-})
-
 document.addEventListener('keydown', (e) => {
 
-    const numberPad = ["0","1","2","3","4","5","6","7","8","9",".","=","Enter"];
-    const operators = ["AC","⌫","+","-","*","/","Backspace"]
+    const validKeys = ["0","1","2","3","4","5","6","7","8","9",".","=",
+                       "Enter","AC","⌫","+","-","*","/","Backspace"];
 
-    if(numberPad.includes(e.key)){
+    if(validKeys.includes(e.key)){
 
-        updateNumber(e.key);
-
-    }else if(operators.includes(e.key)){
-
-        updateOperator(e.key);
+        updateEquation(e.key);
 
     }
 
