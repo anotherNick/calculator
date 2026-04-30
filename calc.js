@@ -1,12 +1,20 @@
-let a = null;
-let b = null;
+const vars = {  
+    a: null,
+    b: null,
+}
 let operator = null;
 let displayingResult = false;
 
+function getCurrentVar(){
+
+    return (operator) ? 'b' : 'a';
+
+}
+
 function operate(){
 
-    a = Number(a);
-    b = Number(b);
+    a = Number(vars.a);
+    b = Number(vars.b);
 
     switch(operator){
         case "+":
@@ -21,7 +29,7 @@ function operate(){
         case "/":
             if(a == 0 || b == 0){
                 alert('Really? Dividing by Zero?');
-                a = null; b = null; operator = null;
+                vars.a = null; vars.b = null; operator = null;
                 updateDisplay('');
             }else{
                 return +(a / b).toFixed(3);
@@ -48,37 +56,23 @@ function updateDisplay(num, isResult = false){
 
 }
 
-function backspace(){
+function backspace(current){
 
     if(displayingResult){
         
         return; // Do not edit results
         
-    }else if(operator){
-
-        if(b === null || b.toString().length < 2){
-
-            b = null;
-            updateDisplay('');
-
-        }else{
-
-            b = b.toString().slice(0, -1);
-            updateDisplay(b);
-
-        }
-
     }else{
 
-        if(a === null || a.toString().length < 2){
+        if(vars[current] === null || vars[current].toString().length < 2){
 
-            a = null;
+            vars[current] = null;
             updateDisplay('');
 
         }else{
 
-            a = a.toString().slice(0, -1);
-            updateDisplay(a);
+            vars[current] = vars[current].toString().slice(0, -1);
+            updateDisplay(vars[current]);
 
         } 
 
@@ -86,32 +80,17 @@ function backspace(){
 
 }
 
-function addDecimal(){
-
-    if(operator){
-
-        b = (displayingResult || b === null) ? 0 : b;
+function addDecimal(current){
+    
+    vars[current] = (displayingResult || vars[current] === null) ? 0 : vars[current];
+ 
+    if(!vars[current].toString().includes('.')){ 
         
-        if(!b.toString().includes('.')){ 
-            
-            b += '.'; 
-        }
-
-        updateDisplay(b);
-
-    }else{
-
-        a = (displayingResult || a === null) ? 0 : a;
-
-        if(!a.toString().includes('.')){ 
-            
-            a += '.'; 
-        
-        }
-
-        updateDisplay(a);
+        vars[current] += '.';
 
     }
+
+    updateDisplay(vars[current]);
 
 }
 
@@ -120,14 +99,14 @@ function updateEquation(value){
     switch(value){
         case "AC":
         
-            a = null; b = null; operator = null; 
+            vars.a = null; vars.b = null; operator = null; 
             updateDisplay('');
             break;
 
         case "⌫":
         case "Backspace":
 
-            backspace();
+            backspace(getCurrentVar());
 
             break;
 
@@ -135,39 +114,40 @@ function updateEquation(value){
         case "-":
         case "*":
         case "/": 
-            
+           console.log(vars, operator); 
             if(!operator){
 
                 operator = value;
         
-            }else if(a !== null && operator && b !== null){
+            }else if(vars.a !== null && operator && vars.b !== null){
 
-                a = operate();
-                b = null;
+                vars.a = operate();
+                vars.b = null;
                 operator = value;
             
-                updateDisplay(a, true);        
+                updateDisplay(vars.a, true);        
 
             }
+            console.log(vars, operator);
 
             break;
         
         case ".":
 
-            addDecimal();
+            addDecimal(getCurrentVar());
 
             break;
         
         case "=":
         case "Enter":
-            
-            if(a !== null && operator && b !== null){
+        
+            if(vars.a !== null && operator && vars.b !== null){
                 
-                a = operate();
-                b = null;
+                vars.a = operate();
+                vars.b = null;
                 operator = null;
 
-                updateDisplay(a, true);
+                updateDisplay(vars.a, true);
             
             }
 
@@ -175,19 +155,13 @@ function updateEquation(value){
         // Cases 0-9:
         default:
 
-            if(operator){
+            const current = getCurrentVar();
+            
+            if(displayingResult && !operator){ vars.a = null; }
 
-                b = (b !== null) ? b += value : value;
-                updateDisplay(b);
+            vars[current] = (vars[current] !== null) ? vars[current] += value : value;
+            updateDisplay(vars[current]);
 
-            }else{
-
-                if(displayingResult){ a = null; }
-
-                a = (a !== null) ? a += value : value;
-                updateDisplay(a);
-
-            }
     }
 
 }
