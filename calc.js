@@ -115,7 +115,7 @@ function updateEquation(value){
         case "*":
         case "/": 
           
-            if(!operator){
+            if(!operator && a !== null){
 
                 operator = value;
         
