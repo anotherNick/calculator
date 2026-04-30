@@ -1,14 +1,14 @@
 let a = null;
 let b = null;
-let op = null;
+let operator = null;
 let displayingResult = false;
 
-function operate(a, b, op){
+function operate(){
 
     a = Number(a);
     b = Number(b);
 
-    switch(op){
+    switch(operator){
         case "+":
             return a + b;
             break;
@@ -21,7 +21,7 @@ function operate(a, b, op){
         case "/":
             if(a == 0 || b == 0){
                 alert('Really? Dividing by Zero?');
-                a = null; b = null; op = null;
+                a = null; b = null; operator = null;
                 updateDisplay('');
             }else{
                 return a / b;
@@ -54,7 +54,7 @@ function backspace(){
         
         return; // Do not edit results
         
-    }else if(op !== null){
+    }else if(operator){
 
         if(b === null || b.toString().length < 2){
 
@@ -88,30 +88,27 @@ function backspace(){
 
 function addDecimal(){
 
-    let currentNumber = document.getElementById('display').innerText;
-    
-    // Don't add decimal to result. Reset the equation/display.
-    if(displayingResult && op === null){ 
+    if(operator){
+
+        b = (displayingResult || b === null) ? 0 : b;
         
-        currentNumber = "0";
-        a = 0; 
+        if(!b.toString().includes('.')){ 
+            
+            b += '.'; 
+        }
 
-    }else if(displayingResult){
-
-        currentNumber = "0";
-
-    }
-    
-    if(!currentNumber.includes('.') && op !== null){
-
-        if(b === null){ b = 0; }
-        b += '.';
         updateDisplay(b);
 
-    }else if(!currentNumber.includes('.')){
+    }else{
 
-        if(a === null){ a = 0; }
-        a += '.';
+        a = (displayingResult || a === null) ? 0 : a;
+
+        if(!a.toString().includes('.')){ 
+            
+            a += '.'; 
+        
+        }
+
         updateDisplay(a);
 
     }
@@ -123,7 +120,7 @@ function updateEquation(value){
     switch(value){
         case "AC":
         
-            a = null; b = null; op = null; 
+            a = null; b = null; operator = null; 
             updateDisplay('');
             break;
 
@@ -139,15 +136,15 @@ function updateEquation(value){
         case "*":
         case "/": 
             
-            if(a !== null && b === null){
+            if(!operator){
 
-                op = value;
+                operator = value;
         
-            }else if(a !== null && op !== null && b !== null){
+            }else if(a !== null && operator && b !== null){
 
-                a = operate(a, b, op);
+                a = operate();
                 b = null;
-                op = value;
+                operator = value;
             
                 updateDisplay(a, true);        
 
@@ -164,11 +161,11 @@ function updateEquation(value){
         case "=":
         case "Enter":
             
-            if(a !== null && op !== null && b !== null){
+            if(a !== null && operator && b !== null){
                 
-                a = operate(a, b, op);
+                a = operate();
                 b = null;
-                op = null;
+                operator = null;
 
                 updateDisplay(a, true);
             
@@ -178,7 +175,7 @@ function updateEquation(value){
         // Cases 0-9:
         default:
 
-            if(op !== null){
+            if(operator){
 
                 b = (b !== null) ? b += value : value;
                 updateDisplay(b);
