@@ -35,33 +35,36 @@ function operate(a, b, op){
 
 function updateDisplay(num, isResult = false){
 
-    const display = document.getElementById('display');
-
     if(num.toString().length > 15){
 
         num = num.toString().slice(0, 15);
 
     }
 
+    const display = document.getElementById('display');
     display.innerText = num;
 
     displayingResult = isResult;
 
 }
 
-function backspace(num){
+function backspace(){
 
-    if(op !== null){
+    if(displayingResult){
+        
+        return; // Do not edit results
+        
+    }else if(op !== null){
 
         if(b === null || b.toString().length < 2){
 
             b = null;
-            return '';
+            updateDisplay('');
 
         }else{
 
             b = b.toString().slice(0, -1);
-            return b;
+            updateDisplay(b);
 
         }
 
@@ -70,14 +73,42 @@ function backspace(num){
         if(a === null || a.toString().length < 2){
 
             a = null;
-            return '';
+            updateDisplay('');
 
         }else{
 
             a = a.toString().slice(0, -1);
-            return a;
+            updateDisplay(a);
 
         } 
+
+    }
+
+}
+
+function addDecimal(){
+
+    let currentNumber = document.getElementById('display').innerText;
+    
+    // Don't add decimal to result. Reset the equation/display.
+    if(displayingResult && op === null){ 
+        
+        currentNumber = "0"; 
+        a = 0; 
+    
+    }
+    
+    if(!currentNumber.includes('.') && op !== null){
+
+        if(b === null){ b = 0; }
+        b += '.';
+        updateDisplay(b);
+
+    }else if(!currentNumber.includes('.')){
+
+        if(a === null){ a = 0; }
+        a += '.';
+        updateDisplay(a);
 
     }
 
@@ -95,11 +126,7 @@ function updateEquation(value){
         case "⌫":
         case "Backspace":
 
-            if(!displayingResult){
-
-                updateDisplay(backspace());
-
-            }
+            backspace();
 
             break;
 
@@ -125,22 +152,8 @@ function updateEquation(value){
             break;
         
         case ".":
-            
-            const currentNumber = document.getElementById('display').innerText;
-            
-            if(!currentNumber.includes('.') && op !== null){
 
-                if(b === null){ b = 0; }
-                b += '.';
-                updateDisplay(b);
-
-            }else if(!currentNumber.includes('.')){
-
-                if(a === null){ a = 0; }
-                a += '.';
-                updateDisplay(a);
-
-            }
+            addDecimal();
 
             break;
         
