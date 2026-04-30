@@ -93,9 +93,13 @@ function addDecimal(){
     // Don't add decimal to result. Reset the equation/display.
     if(displayingResult && op === null){ 
         
-        currentNumber = "0"; 
+        currentNumber = "0";
         a = 0; 
-    
+
+    }else if(displayingResult){
+
+        currentNumber = "0";
+
     }
     
     if(!currentNumber.includes('.') && op !== null){
