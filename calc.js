@@ -31,6 +31,7 @@ function operate(){
                 alert('Really? Dividing by Zero?');
                 vars.a = null; vars.b = null; operator = null;
                 updateDisplay('');
+                return vars.a;
             }else{
                 return +(a / b).toFixed(3);
             }
