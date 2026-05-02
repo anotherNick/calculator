@@ -13,8 +13,8 @@ function getCurrentVar(){
 
 function operate(){
 
-    a = Number(vars.a);
-    b = Number(vars.b);
+    const a = Number(vars.a);
+    const b = Number(vars.b);
 
     switch(operator){
         case "+":
@@ -27,7 +27,7 @@ function operate(){
             return +(a * b).toFixed(3);
   
         case "/":
-            if(a == 0 || b == 0){
+            if(b == 0){
                 alert('Really? Dividing by Zero?');
                 vars.a = null; vars.b = null; operator = null;
                 updateDisplay('');
@@ -160,7 +160,7 @@ function updateEquation(value){
             
             if(displayingResult && !operator){ vars.a = null; }
 
-            vars[current] = (vars[current] !== null) ? vars[current] += value : value;
+            vars[current] = (vars[current] !== null) ? vars[current] + value : value;
             updateDisplay(vars[current]);
 
     }
