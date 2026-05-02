@@ -11,6 +11,28 @@ function getCurrentVar(){
 
 }
 
+function updateDisplay(num, isResult = false){
+
+    if(num.toString().length > 15){
+
+        num = num.toString().slice(0, 15);
+
+    }
+
+    const display = document.getElementById('display');
+    display.textContent = num;
+
+    displayingResult = isResult;
+
+}
+
+function clearEquation(){
+
+    vars.a = null; vars.b = null; operator = null; 
+    updateDisplay('');
+
+}
+
 function operate(){
 
     const a = Number(vars.a);
@@ -39,21 +61,6 @@ function operate(){
         default:
             alert('Invalid operator specified!')
     }
-
-}
-
-function updateDisplay(num, isResult = false){
-
-    if(num.toString().length > 15){
-
-        num = num.toString().slice(0, 15);
-
-    }
-
-    const display = document.getElementById('display');
-    display.innerText = num;
-
-    displayingResult = isResult;
 
 }
 
@@ -95,20 +102,59 @@ function addDecimal(current){
 
 }
 
+function updateOperator(newOperator){
+
+    if(vars.b == null && vars.a !== null){
+
+        operator = newOperator;
+
+    }else if(vars.a !== null && operator && vars.b !== null){
+
+        vars.a = operate();
+        vars.b = null;
+        operator = newOperator;
+    
+        updateDisplay(vars.a, true);        
+
+    }
+
+}
+
+function tryCalculation(){
+
+    if(vars.a !== null && operator && vars.b !== null){
+        
+        vars.a = operate();
+        vars.b = null;
+        operator = null;
+
+        updateDisplay(vars.a, true);
+    
+    }
+
+}
+
+function inputNumber(newNumber, current){
+
+    if(displayingResult && !operator){ clearEquation(); }
+
+    vars[current] = (vars[current] !== null) ? vars[current] + newNumber : newNumber;
+    updateDisplay(vars[current]);
+
+}
+
 function updateEquation(value){
 
     switch(value){
         case "AC":
         
-            vars.a = null; vars.b = null; operator = null; 
-            updateDisplay('');
+            clearEquation();
             break;
 
         case "⌫":
         case "Backspace":
 
             backspace(getCurrentVar());
-
             break;
 
         case "+":
@@ -116,53 +162,24 @@ function updateEquation(value){
         case "*":
         case "/": 
           
-            if(!operator && vars.a !== null){
-
-                operator = value;
-        
-            }else if(vars.a !== null && operator && vars.b !== null){
-
-                vars.a = operate();
-                vars.b = null;
-                operator = value;
-            
-                updateDisplay(vars.a, true);        
-
-            }
-          
-
+            updateOperator(value);
             break;
         
         case ".":
 
             addDecimal(getCurrentVar());
-
             break;
         
         case "=":
         case "Enter":
         
-            if(vars.a !== null && operator && vars.b !== null){
-                
-                vars.a = operate();
-                vars.b = null;
-                operator = null;
-
-                updateDisplay(vars.a, true);
-            
-            }
-
+            tryCalculation();
             break;
         // Cases 0-9:
         default:
 
-            const current = getCurrentVar();
-            
-            if(displayingResult && !operator){ vars.a = null; }
-
-            vars[current] = (vars[current] !== null) ? vars[current] + value : value;
-            updateDisplay(vars[current]);
-
+            inputNumber(value, getCurrentVar());
+            break;
     }
 
 }
