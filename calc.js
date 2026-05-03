@@ -110,7 +110,8 @@ function updateOperator(newOperator){
 
     }else if(vars.a !== null && operator && vars.b !== null){
 
-        tryCalculation();        
+        tryCalculation();
+        operator = newOperator;
 
     }
 
