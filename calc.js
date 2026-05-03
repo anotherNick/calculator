@@ -110,11 +110,7 @@ function updateOperator(newOperator){
 
     }else if(vars.a !== null && operator && vars.b !== null){
 
-        vars.a = operate();
-        vars.b = null;
-        operator = newOperator;
-    
-        updateDisplay(vars.a, true);        
+        tryCalculation();        
 
     }
 
@@ -188,7 +184,7 @@ const calculator = document.getElementById("calculator");
 
 calculator.addEventListener('click', (e) => {
     if(e.target.tagName === 'BUTTON'){
-        updateEquation(e.target.innerText);
+        updateEquation(e.target.textContent);
     }
 });
 
